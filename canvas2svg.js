@@ -288,6 +288,16 @@
             properties = {};
         }
 
+        if (properties.width < 0) {
+            properties.width *= -1;
+            properties.x -= properties.width; 
+        }
+
+        if (properties.height < 0) {
+            properties.height *= -1;
+            properties.y -= properties.height; 
+        }
+
         var element = this.__document.createElementNS("http://www.w3.org/2000/svg", elementName),
             keys = Object.keys(properties), i, key;
         if (resetFill) {
@@ -1111,6 +1121,11 @@
         parent = this.__closestGroupOrSvg();
         currentElement = this.__currentElement;
         var translateDirective = "translate(" + dx + ", " + dy + ")";
+
+        if (image.nodeName === "CANVAS" && image.getContext("2d") instanceof ctx) {
+            image = image.getContext("2d");
+        }
+
         if (image instanceof ctx) {
             //canvas2svg mock canvas context. In the future we may want to clone nodes instead.
             //also I'm currently ignoring dw, dh, sw, sh, sx, sy for a mock context.
